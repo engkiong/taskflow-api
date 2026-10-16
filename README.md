@@ -78,7 +78,7 @@ The application starts on `http://localhost:8080`.
 | Method | Path              | Description             | Request Body | Success Response |
 |--------|-------------------|--------------------------|---------------|-------------------|
 | GET    | `/api/tasks`      | Get all tasks            | —             | `200 OK`          |
-| GET    | `/api/tasks/{id}` | Get a single task by ID  | —             | `200 OK`          |
+| GET    | `/api/tasks/{id}` | Get a single task by ID  | —             | `200 OK` (`404 Not Found` if no such ID) |
 | POST   | `/api/tasks`      | Create a new task        | Task JSON     | `201 Created`     |
 
 ### Testing the API
