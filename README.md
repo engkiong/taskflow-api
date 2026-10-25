@@ -44,9 +44,32 @@ Note: tasks are stored in memory, so they are lost whenever the app restarts or 
 
 ### Stretch goal (optional)
 
-```
-Stretch goal: None
-```
+**Option 1: CI pipeline with GitHub Actions**, publishing to Docker Hub.
+
+Workflow file: `.github/workflows/docker-publish.yml`. On every push to `main` it
+builds and tests the project with Maven, logs in to Docker Hub using repository
+secrets (`DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`, never stored in the code), then
+builds the Docker image and pushes it tagged `latest` and with the Git commit SHA.
+This runs alongside the Railway deployment, which redeploys from the same push.
+
+- Successful pipeline run: https://github.com/engkiong/taskflow-api/actions/runs/40180070068
+- Docker Hub image: https://hub.docker.com/r/itcontact90/taskflow-api
+
+![GitHub Actions run](screenshots/github-actions-run.png)
+
+![Docker Hub tags](screenshots/dockerhub-tags.png)
+
+Issues I ran into and fixed:
+
+- `git push` from WSL failed with "Could not connect to server" because WSL had lost
+  its network connection. Fixed by running `wsl --shutdown` and restarting my computer.
+- The push was rejected because my GitHub token had no `workflow` scope. I created
+  the workflow file through the GitHub website instead.
+- The first pipeline run failed with a YAML syntax error because I accidentally pasted
+  the terminal commands into the workflow file. I removed them and the second run passed.
+
+Bonus: because the image is also tagged with the commit SHA, this covers part of
+Option 4 (versioned images).
 
 ## Getting started
 
